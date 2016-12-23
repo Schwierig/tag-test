@@ -41,7 +41,9 @@ function fetchTags(repositoryName, allRepositories) {
 
 setInterval(function() {
     chrome.storage.sync.get(null, function (allRepositories) {
-        fetchTags(repositoryName, allRepositories);
+        for (var repositoryName in allRepositories) {
+            fetchTags(repositoryName, allRepositories);
+        }
     });
 }, 5000);
 

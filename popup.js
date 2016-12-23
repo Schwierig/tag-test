@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('repo_list').appendChild(repositoryItem);
         }
 
-        document.getElementById('info').addEventListener('click', function (form) {
-            var repositoryName = form.target[0].value;
+        document.getElementById('info').addEventListener('click', function () {
+            var repositoryName = document.getElementById('repo').value;
             var ajax = new XMLHttpRequest();
 
             ajax.open('GET', 'https://api.github.com/repos/' + repositoryName + '/tags', true);

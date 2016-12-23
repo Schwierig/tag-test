@@ -1,23 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
-    chrome.storage.sync.get(null, function (allRepositories) {
-        for (var repositoryName in allRepositories) {
-            var repositoryItem = document.createElement('li');
-            repositoryItem.innerText = repositoryName+' : '+JSON.parse(allRepositories[repositoryName])[0];
-            document.getElementById('repo_list').appendChild(repositoryItem);
-
-            fetchTags(repositoryName);
-        }
-
-        document.getElementById('info').addEventListener('click', function () {
-            var repositoryName = document.getElementById('repo').value;
-
-            fetchTags(repositoryName);
-            return null;
-        });
-    });
-});
-
-function fetchTags(repositoryName) {
+function fetchTags(repositoryName, allRepositories) {
     var ajax = new XMLHttpRequest();
 
     ajax.open('GET', 'https://api.github.com/repos/' + repositoryName + '/tags', true);
@@ -41,16 +22,6 @@ function fetchTags(repositoryName) {
             var repositoryStore = {};
             repositoryStore[repositoryName] = JSON.stringify(tagObject);
 
-            chrome.storage.sync.set(repositoryStore, function () {
-                // Notify that we saved.
-                chrome.notifications.create(null, {
-                    type: 'basic',
-                    iconUrl: 'icon.png',
-                    title: 'Saved',
-                    message: 'Saved!'
-                });
-            });
-
             if (newTag) {
                 chrome.storage.sync.set(repositoryStore, function () {
                     // Notify that we saved.
@@ -67,3 +38,38 @@ function fetchTags(repositoryName) {
         }
     };
 }
+
+setInterval(function() {
+    chrome.storage.sync.get(null, function (allRepositories) {
+        fetchTags(repositoryName, allRepositories);
+    });
+}, 5000);
+
+document.addEventListener('DOMContentLoaded', function () {
+    chrome.storage.sync.get(null, function (allRepositories) {
+        for (var repositoryName in allRepositories) {
+            var repositoryItem = document.createElement('li');
+            repositoryItem.innerText = repositoryName+' : '+JSON.parse(allRepositories[repositoryName])[0];
+            document.getElementById('repo_list').appendChild(repositoryItem);
+
+            fetchTags(repositoryName, allRepositories);
+        }
+
+        document.getElementById('info').addEventListener('click', function () {
+            var repositoryName = document.getElementById('repo').value;
+
+            fetchTags(repositoryName, allRepositories);
+
+            chrome.storage.sync.set(repositoryStore, function () {
+                // Notify that we saved.
+                chrome.notifications.create(null, {
+                    type: 'basic',
+                    iconUrl: 'icon.png',
+                    title: 'Saved',
+                    message: 'Saved!'
+                });
+            });
+            return null;
+        });
+    });
+});

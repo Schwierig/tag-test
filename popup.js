@@ -28,8 +28,8 @@ function fetchTags(repositoryName, allRepositories) {
                     chrome.notifications.create(null, {
                         type: 'basic',
                         iconUrl: 'icon.png',
-                        title: 'New Tag',
-                        message: 'New Tag!'
+                        title: repositoryName+" has a new tag!",
+                        message: tagObject[0]+' was just released'
                     });
                 });
             }

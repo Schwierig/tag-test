@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+    <title>GitHub Extension</title>
+    <script src="fetch.js"></script>
+    <script src="options.js"></script>
+    <link rel="stylesheet" href="options.csss">
+</head>
+<body>
+<div class="page">
+    <h1>Settings</h1>
+</div>
+<div class="page">
+    <section>
+        <h3>Repository List</h3>
+        <ul id="repo_list">
+        </ul>
+        <label>
+            Repository Creator and Name (Creator/Name)
+            <input type="text" placeholder="Repo URL" id="repo"/>
+        </label>
+        <button type="button" id="info">Add Repository</button>
+    </section>
+    <hr/>
+    <section>
+        <h3>General Settings</h3>
+        <label>
+            <h4>Auto Update Interval</h4>
+            <input type="text" id="interval">
+        </label>
+        <label>
+            <h4>GitHub Access Token</h4>
+            <input type="text" id="access_token">
+        </label>
+    </section>
+    <section>
+    </section>
+    <button type="button" id="save">Save</button>
+</div>
+</body>
+</html>
